@@ -37,7 +37,7 @@ public class XMLConfigBuilder {
     public Configuration parseConfig(InputStream inputStream) throws DocumentException, PropertyVetoException, IOException {
         Document document = new SAXReader().read(inputStream);
         Element rootElement = document.getRootElement();
-        List<Element> elementList = rootElement.selectNodes("//proprety");
+        List<Element> elementList = rootElement.selectNodes("//property");
         Properties properties = new Properties();
         elementList.forEach(element -> {
             String name = element.attributeValue("name");
