@@ -1,0 +1,8 @@
+<mapper namespance="com.qis.dao.UserDao">
+    <select id="findAll" resultType="com.qis.pojo.User">
+        select * from user
+    </select>
+    <select id="findByCondition" paramType="com.qis.pojo.User" resultType="com.qis.pojo.User">
+        select * from user where id=#{id} and username=#{username}
+    </select>
+</mapper>
