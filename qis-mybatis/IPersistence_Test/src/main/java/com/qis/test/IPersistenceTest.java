@@ -24,15 +24,29 @@ public class IPersistenceTest {
         SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuild.build(resourceAsSteam);
         //获取SqlSession
         SqlSession sqlSession = sqlSessionFactory.createSqlSession();
-        //执行sql
+        //查询所有
         UserDao mapper = sqlSession.getMapper(UserDao.class);
-        System.out.println(mapper.findAll());
-
+        // System.out.println(mapper.findAll());
         User userCondition = new User();
         userCondition.setId(2);
         userCondition.setUsername("tom");
-        //执行sql
-        User user = mapper.findByCondition(userCondition);
-        System.out.println(user);
+        //查询单个
+//        User user = mapper.findByCondition(userCondition);
+//        System.out.println(user);
+//        System.out.println("----------------------");
+
+        User userParam = new User();
+        userParam.setId(4);
+        userParam.setUsername("testInsert");
+        userParam.setPassword("123");
+        userParam.setBirthday("12-12");
+
+        //mapper.save(userParam);
+
+        userParam.setUsername("testUpdate");
+
+        //mapper.update(userParam);
+
+        mapper.delete(userParam);
     }
 }

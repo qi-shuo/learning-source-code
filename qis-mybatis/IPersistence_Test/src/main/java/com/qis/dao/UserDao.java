@@ -23,4 +23,26 @@ public interface UserDao {
      * @return
      */
     User findByCondition(User userCondition);
+
+    /**
+     * 删除
+     *
+     * @param userCondition
+     */
+    void delete(User userCondition);
+
+    /**
+     * 更新
+     *
+     * @param userCondition
+     */
+    void update(User userCondition);
+
+    /**
+     * 新增
+     *
+     * @param user
+     */
+    void save(User user);
+
 }
