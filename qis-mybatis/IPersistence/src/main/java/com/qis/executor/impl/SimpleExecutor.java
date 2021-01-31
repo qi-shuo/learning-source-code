@@ -12,10 +12,7 @@ import javax.sql.DataSource;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +24,47 @@ public class SimpleExecutor implements Executor {
     @Override
     public <E> List<E> query(Configuration configuration, MappedStatement mappedStatement, Object... params) throws Exception {
 
+        PreparedStatement preparedStatement = getPreparedStatement(configuration, mappedStatement, params);
+        //5:执行sql
+        ResultSet resultSet = preparedStatement.executeQuery();
+        String resultType = mappedStatement.getResultType();
+        Class<?> resultTypeClassType = getClassType(resultType);
+        List<Object> result = new ArrayList<>();
+        //6:封装返回体
+        while (resultSet.next()) {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            //从第一1列开始到最后一列
+            Object resultObj = resultTypeClassType.getDeclaredConstructor().newInstance();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                String columnName = metaData.getColumnName(i);
+                Object columnValue = resultSet.getObject(columnName);
+                //通过内省或者反射进行赋值
+                PropertyDescriptor propertyDescriptor = new PropertyDescriptor(columnName, resultTypeClassType);
+                Method writeMethod = propertyDescriptor.getWriteMethod();
+                writeMethod.invoke(resultObj, columnValue);
+
+            }
+            result.add(resultObj);
+
+        }
+        return (List<E>) result;
+    }
+
+
+    @Override
+    public void update(Configuration configuration, MappedStatement mappedStatement, Object... params) throws Exception {
+        PreparedStatement preparedStatement = getPreparedStatement(configuration, mappedStatement, params);
+        //5:执行sql
+        preparedStatement.executeUpdate();
+    }
+
+
+    /**
+     * 获取预编译对象
+     *
+     * @return
+     */
+    private PreparedStatement getPreparedStatement(Configuration configuration, MappedStatement mappedStatement, Object... params) throws Exception {
         DataSource dataSource = configuration.getDataSource();
         //1:获取数据库连接
         Connection connection = dataSource.getConnection();
@@ -56,29 +94,7 @@ public class SimpleExecutor implements Executor {
                 preparedStatement.setObject(i + 1, paramValue);
             }
         }
-        //5:执行sql
-        ResultSet resultSet = preparedStatement.executeQuery();
-        String resultType = mappedStatement.getResultType();
-        Class<?> resultTypeClassType = getClassType(resultType);
-        List<Object> result = new ArrayList<>();
-        //6:封装返回体
-        while (resultSet.next()) {
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            //从第一1列开始到最后一列
-            Object resultObj = resultTypeClassType.getDeclaredConstructor().newInstance();
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                String columnName = metaData.getColumnName(i);
-                Object columnValue = resultSet.getObject(columnName);
-                //通过内省或者反射进行赋值
-                PropertyDescriptor propertyDescriptor = new PropertyDescriptor(columnName, resultTypeClassType);
-                Method writeMethod = propertyDescriptor.getWriteMethod();
-                writeMethod.invoke(resultObj, columnValue);
-
-            }
-            result.add(resultObj);
-
-        }
-        return (List<E>) result;
+        return preparedStatement;
     }
 
     /**

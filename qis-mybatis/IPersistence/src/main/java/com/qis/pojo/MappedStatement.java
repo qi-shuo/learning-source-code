@@ -28,4 +28,8 @@ public class MappedStatement {
      * sql
      */
     private String sql;
+    /**
+     * sql类型 select,insert,update,delete,unknown
+     */
+    private String sqlCommandType;
 }
