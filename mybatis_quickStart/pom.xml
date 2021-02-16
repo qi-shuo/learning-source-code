@@ -49,6 +49,13 @@
             <artifactId>mybatis-redis</artifactId>
             <version>1.0.0-beta2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jruby/jruby-core -->
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-core</artifactId>
+            <version>9.2.13.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

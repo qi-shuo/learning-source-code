@@ -1,0 +1,1 @@
+基于转账自定义@Service、@Autowired、@Transactional注解类，完成基于注解的IOC容器（Bean对象创建及依赖注入维护）和声明式事务控制，并且可以实现转账成功和转账异常时事务回滚
