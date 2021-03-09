@@ -23,6 +23,7 @@ public class SpringApplication {
         tomcat.getService().addConnector(connector);
         tomcat.setConnector(connector);
         tomcat.getHost().setAutoDeploy(false);
+        //表示这是一个webapp
         tomcat.addWebapp("/",baseDir.getAbsolutePath());
         tomcat.start();
     }
