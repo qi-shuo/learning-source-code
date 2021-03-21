@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app>
+    <servlet>
+        <servlet-name>demo1Servlet</servlet-name>
+        <servlet-class>com.qis.server.Demo1Servlet</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>demo1Servlet</servlet-name>
+        <url-pattern>/demo1Servlet</url-pattern>
+    </servlet-mapping>
+</web-app>
