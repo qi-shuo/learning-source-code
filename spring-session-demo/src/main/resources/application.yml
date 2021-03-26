@@ -10,5 +10,3 @@ spring:
   thymeleaf:
     cache: false
     enabled: false
-  main:
-    allow-bean-definition-overriding: true
