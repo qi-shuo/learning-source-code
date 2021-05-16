@@ -47,7 +47,7 @@ public class TPMonitorFilter implements Filter {
                     System.out.println();
                     return;
                 }
-                System.out.printf(methodName + " :TP90:%s,TP99:%s", sortList.get(90 % sortList.size()), sortList.get(99 % sortList.size()));
+                System.out.printf(methodName + " :TP90:%s,TP99:%s", sortList.get((int)(0.9 * sortList.size())), sortList.get((int)(0.99 % sortList.size())));
                 System.out.println();
             });
         }, 0, 5, TimeUnit.SECONDS);
