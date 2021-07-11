@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: sharding-database
+  shardingsphere:
+    props:
+      sql:
+        show: true

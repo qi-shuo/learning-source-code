@@ -1,0 +1,45 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: ds-master0,ds-master1,ds-slave0,ds-slave1
+      ds-master0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://49.232.16.246:3306/qis
+        username: root
+        password: 123456
+      ds-master1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://42.193.125.155:3306/qis
+        username: root
+        password: 123456
+      ds-slave0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://152.136.111.35:3306/qis
+        username: root
+        password: 123456
+      ds-slave1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://152.136.138.104:3306/qis
+        username: root
+        password: 123456
+    sharding:
+      tables:
+        c_order:
+          database-strategy:
+            inline:
+              sharding-column: user_id
+              algorithm-expression: ds-master$->{user_id % 2}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+      master-slave-rules:
+        ds-master0:
+          master-data-source-name: ds-master0
+          slave-data-source-names: ds-slave0
+        ds-master1:
+          master-data-source-name: ds-master1
+          slave-data-source-names: ds-slave1
